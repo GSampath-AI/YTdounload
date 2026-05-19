@@ -33,10 +33,12 @@ Perfect for:
 
 - 📥 Download YouTube videos in **MP4** format
 - 🎵 Extract audio as **MP3**
-- 🎯 Choose video quality (144p, 360p, 720p, 1080p, and higher)
+- 🎯 Choose video quality (**1080p**, **720p**, **480p**)
+- 📋 Batch downloads from **`urls.txt`** (one URL per line)
+- 🔧 **ffmpeg** auto-detect and auto-install (Windows via winget)
 - ⚡ Fast and lightweight — no bloat, no ads
-- 💻 Simple command-line interface
-- 📁 Custom output folder support
+- 💻 Simple interactive command-line interface
+- 📁 Saves to **`downloads/`** folder
 - 🔓 100% free and open source
 
 ---
@@ -50,7 +52,9 @@ $ python downloader.py
 
 🎥 YouTube Video Downloader
 ---------------------------
-Enter YouTube URL: https://www.youtube.com/watch?v=...
+📋 Loaded 1 URL(s) from urls.txt
+   • https://www.youtube.com/watch?v=...
+
 Choose format:
   1) MP4 (Video)
   2) MP3 (Audio only)
@@ -72,9 +76,9 @@ Choose quality:
 
 ### Prerequisites
 
-- Python 3.7 or higher
+- Python 3.8 or higher
 - pip (Python package manager)
-- FFmpeg (required for MP3 conversion)
+- **ffmpeg** (optional for MP4; required for MP3 — installed automatically when missing on Windows)
 
 ### Installation
 
@@ -91,10 +95,19 @@ cd youtube-downloader
 pip install -r requirements.txt
 ```
 
-**3. Install FFmpeg** (only needed for MP3 extraction)
+**3. Add URLs**
 
-- **Windows:** Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH
-- **macOS:** `brew install ffmpeg`
+Edit `urls.txt` and add your YouTube links (one per line):
+
+```text
+# Lines starting with # are ignored
+https://www.youtube.com/watch?v=VIDEO_ID
+```
+
+**4. FFmpeg** (auto-installed when needed)
+
+- **Windows:** Installed via `winget install Gyan.FFmpeg` if not found
+- **macOS:** `brew install ffmpeg` (or auto via Homebrew if available)
 - **Linux:** `sudo apt install ffmpeg`
 
 ---
@@ -107,34 +120,18 @@ pip install -r requirements.txt
 python downloader.py
 ```
 
-You'll be prompted to enter the YouTube URL and choose your preferred format and quality.
-
-### Direct URL (optional)
-
-```bash
-python downloader.py "https://www.youtube.com/watch?v=VIDEO_ID"
-```
-
-### Audio only
-
-```bash
-python downloader.py "URL" --audio
-```
-
-### Custom output folder
-
-```bash
-python downloader.py "URL" --output ./my-videos
-```
+1. URLs are read from **`urls.txt`**
+2. Choose **MP4** or **MP3**
+3. For MP4, choose **1080p**, **720p**, or **480p**
+4. Files are saved in **`downloads/`**
 
 ---
 
 ## 🛠️ Built With
 
 - **[Python 3](https://www.python.org/)** — core language
-- **[pytube](https://pytube.io/)** / **[yt-dlp](https://github.com/yt-dlp/yt-dlp)** — YouTube video extraction
-- **[FFmpeg](https://ffmpeg.org/)** — audio conversion to MP3
-- **[tqdm](https://github.com/tqdm/tqdm)** — progress bar
+- **[yt-dlp](https://github.com/yt-dlp/yt-dlp)** — YouTube video/audio extraction
+- **[FFmpeg](https://ffmpeg.org/)** — MP3 conversion and MP4 merge
 
 ---
 
@@ -143,8 +140,9 @@ python downloader.py "URL" --output ./my-videos
 ```
 youtube-downloader/
 ├── downloader.py         # Main script
+├── urls.txt              # Your YouTube URLs (one per line)
 ├── requirements.txt      # Python dependencies
-├── README.md             # You are here
+├── readme.md             # You are here
 ├── LICENSE               # MIT license
 └── downloads/            # Default output folder
 ```
@@ -153,9 +151,10 @@ youtube-downloader/
 
 ## 📋 Roadmap
 
+- [x] Batch downloads from a `.txt` file of URLs
+- [x] Auto-install ffmpeg when missing (Windows)
 - [ ] Add GUI version (Tkinter / PyQt)
 - [ ] Playlist download support
-- [ ] Batch downloads from a `.txt` file of URLs
 - [ ] Resume interrupted downloads
 - [ ] Subtitle download support
 - [ ] Cross-platform `.exe` and `.app` builds
@@ -164,8 +163,9 @@ youtube-downloader/
 
 ## 🐛 Known Issues
 
-- YouTube occasionally updates its backend, which may break `pytube`. If downloads fail, update with: `pip install --upgrade pytube`
+- YouTube occasionally updates its backend. If downloads fail, update with: `pip install -U yt-dlp`
 - Some age-restricted videos may not be downloadable without authentication
+- MP3 requires ffmpeg; restart your terminal after winget installs it if detection fails
 
 Found a bug? [Open an issue](https://github.com/sampath-pegasus/youtube-downloader/issues).
 
@@ -209,7 +209,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 🙏 Acknowledgments
 
-- The [pytube](https://pytube.io/) team for the excellent library
+- The [yt-dlp](https://github.com/yt-dlp/yt-dlp) project for reliable YouTube extraction
 - The open-source community for inspiration and tools
 - Everyone who stars and contributes to this project ❤️
 
